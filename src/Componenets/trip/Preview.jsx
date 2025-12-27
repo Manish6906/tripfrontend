@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
   const submitForm = async () => {
     try {
-      await axios.post(`${API_URL}api/trip`, data);
+      await axios.post(`${API_URL}api/trip-register`, data);
       alert("Form submitted & Email sent!");
       localStorage.removeItem("tripData");
     } catch (error) {
