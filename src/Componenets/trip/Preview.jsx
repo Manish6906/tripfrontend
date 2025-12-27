@@ -14,7 +14,7 @@ export default function Preview() {
   const submitForm = async () => {
     setLoading(true);
     try {
-      await axios.post(`${API_URL}/api/trip-register`, data, {
+      await axios.post(`${API_URL}api/trip-register`, data, {
         headers: {
           "Content-Type": "application/json",
         },
