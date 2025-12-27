@@ -83,8 +83,7 @@ export default function TripForm() {
           >
             <option value="">Select Trip</option>
             <option value="Shimla">Shimla</option>
-            <option value="Bombay">Bombay</option>
-            <option value="Picnic Spot">Picnic Spot</option>
+            <option value="Bombay">Bombay Picnic Spot</option>
           </select>
         </div>
 

@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 
 export default function Preview() {
   const data = JSON.parse(localStorage.getItem("tripData"));
+const API_URL = import.meta.env.VITE_API_URL;
+
 
   const submitForm = async () => {
     try {
-      await axios.post("http://localhost:5000/api/trip", data);
+      await axios.post(`${API_URL}api/trip`, data);
       alert("Form submitted & Email sent!");
       localStorage.removeItem("tripData");
     } catch (error) {
