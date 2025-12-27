@@ -1,6 +1,13 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Phone, Users, MapPin } from "lucide-react";
+import {
+  User,
+  Mail,
+  Phone,
+  Users,
+  MapPin,
+  Calendar
+} from "lucide-react";
 import { Toaster, toast } from "react-hot-toast";
 import { useState } from "react";
 
@@ -14,7 +21,7 @@ export default function Preview() {
   const submitForm = async () => {
     setLoading(true);
     try {
-      await axios.post(`${API_URL}api/trip-register`, data, {
+      await axios.post(`${API_URL}/api/trip-register`, data, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -23,7 +30,7 @@ export default function Preview() {
       toast.success("Form submitted successfully!");
       localStorage.removeItem("tripData");
       setTimeout(() => {
-        navigate("/"); // Redirect to home
+        navigate("/");
       }, 1000);
     } catch (error) {
       toast.error("Something went wrong!");
@@ -32,89 +39,81 @@ export default function Preview() {
     }
   };
 
+  // Format date (YYYY-MM-DD → DD Mon YYYY)
+  const formattedDate = data?.tripDate
+    ? new Date(data.tripDate).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : "N/A";
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-300 px-4 py-8 josefin-sans">
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-right" />
 
-      <div className="w-full max-w-md bg-white/90 backdrop-blur-lg p-8 rounded-3xl shadow-2xl border border-gray-100">
+      <div className="w-full max-w-md bg-white/90 backdrop-blur-lg p-8 rounded-3xl shadow-2xl">
 
-        {/* Header */}
-        <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6 bg-gradient-to-r from-green-500 to-blue-500 text-transparent bg-clip-text">
+        <h2 className="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-green-500 to-blue-500 text-transparent bg-clip-text">
           Preview Details
         </h2>
 
-        {/* Preview Data */}
-        <div className="bg-white/70 border border-gray-200 rounded-xl p-6 text-gray-700 space-y-4 shadow-inner">
+        <div className="bg-white/70 border rounded-xl p-6 space-y-4 shadow-inner">
+
           <div className="flex items-center gap-2">
-            <User size={20} className="text-green-500" />
+            <User className="text-green-500" />
             <span><strong>Name:</strong> {data?.name}</span>
           </div>
+
           <div className="flex items-center gap-2">
-            <Mail size={20} className="text-blue-500" />
+            <Mail className="text-blue-500" />
             <span><strong>Email:</strong> {data?.email}</span>
           </div>
+
           <div className="flex items-center gap-2">
-            <Phone size={20} className="text-indigo-500" />
+            <Phone className="text-indigo-500" />
             <span><strong>Phone:</strong> {data?.phone}</span>
           </div>
+
           <div className="flex items-center gap-2">
-            <Users size={20} className="text-purple-500" />
+            <Users className="text-purple-500" />
             <span><strong>Father Name:</strong> {data?.fatherName}</span>
           </div>
+
           <div className="flex items-center gap-2">
-            <Users size={20} className="text-pink-500" />
+            <Users className="text-pink-500" />
             <span><strong>Mother Name:</strong> {data?.motherName}</span>
           </div>
+
           <div className="flex items-center gap-2">
-            <MapPin size={20} className="text-red-500" />
+            <MapPin className="text-red-500" />
             <span><strong>Trip Selected:</strong> {data?.trip}</span>
           </div>
+
+          {/* Trip Date */}
+          <div className="flex items-center gap-2">
+            <Calendar className="text-orange-500" />
+            <span><strong>Trip Date:</strong> {formattedDate}</span>
+          </div>
+
         </div>
 
         {/* Submit Button */}
         <button
           onClick={submitForm}
           disabled={loading}
-          className={`mt-8 w-full cursor-pointer bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-2xl font-semibold transition transform shadow-lg flex items-center justify-center gap-2 hover:scale-105 ${
-            loading ? "opacity-70 cursor-not-allowed" : ""
+          className={`mt-8 w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-3 rounded-2xl font-semibold shadow-lg ${
+            loading ? "opacity-70 cursor-not-allowed" : "hover:scale-105"
           }`}
         >
-          {loading ? (
-            <>
-              <svg
-                className="animate-spin h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8v8z"
-                ></path>
-              </svg>
-              Submitting...
-            </>
-          ) : (
-            "Final Submit →"
-          )}
+          {loading ? "Submitting..." : "Final Submit →"}
         </button>
 
-        {/* Back Button */}
+        {/* Back */}
         <Link to="/form">
           <button
             disabled={loading}
-            className={`mt-4 w-full cursor-pointer bg-gray-200 text-gray-800 py-3 rounded-2xl font-medium hover:bg-gray-300 transition ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+            className="mt-4 w-full bg-gray-200 py-3 rounded-2xl hover:bg-gray-300"
           >
             ← Back
           </button>
